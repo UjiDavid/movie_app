@@ -9,6 +9,7 @@ const API_URL = 'https://www.omdbapi.com?apikey=c9d6adc0';
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
@@ -18,6 +19,7 @@ const Home = () => {
   const searchMovies = async (title) => {
     const response = await fetch(`${API_URL}&s=${title}`);
     const data = await response.json();
+    setIsLoading(false);
     setMovies(data.Search);
   };
 
@@ -25,6 +27,14 @@ const Home = () => {
     e.preventDefault();
     searchMovies(searchTerm);
   };
+
+  if (isLoading === true) {
+    return (
+      <div className="movies">
+        <h1>Loading</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="app">

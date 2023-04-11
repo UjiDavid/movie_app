@@ -6,6 +6,7 @@ const API_URL = 'https://www.omdbapi.com?apikey=c9d6adc0';
 const MovieScreen = () => {
   let { imdbID } = useParams();
   const [movieDetails, setMovieDetails] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     movieSingle(imdbID);
@@ -14,12 +15,25 @@ const MovieScreen = () => {
   const movieSingle = async (imdbId) => {
     const response = await fetch(`${API_URL}&i=${imdbId}`);
     const movie = await response.json();
+    setIsLoading(false);
     setMovieDetails(movie);
   };
 
+  if (isLoading === true) {
+    return (
+      <div className="movies">
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
+
   return (
     <div className="movies">
-      {movieDetails ? (
+      {movieDetails.Response === 'False' ? (
+        <>
+          <h3>Incorrect IMDB Title. Please Try Again</h3>
+        </>
+      ) : (
         <>
           <div className="poster">
             <img src={movieDetails.Poster} alt={movieDetails.Title} />
@@ -46,8 +60,6 @@ const MovieScreen = () => {
             <p>{movieDetails.imdbRating}</p>
           </div>
         </>
-      ) : (
-        <h2>No Movies Found</h2>
       )}
     </div>
   );
