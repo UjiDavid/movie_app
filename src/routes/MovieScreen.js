@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-const API_URL = 'http://www.omdbapi.com?apikey=c9d6adc0';
+const API_URL = 'https://www.omdbapi.com?apikey=c9d6adc0';
 
 const MovieScreen = () => {
   let { imdbID } = useParams();
@@ -14,7 +14,6 @@ const MovieScreen = () => {
   const movieSingle = async (imdbId) => {
     const response = await fetch(`${API_URL}&i=${imdbId}`);
     const movie = await response.json();
-    console.log(movie);
     setMovieDetails(movie);
   };
 
